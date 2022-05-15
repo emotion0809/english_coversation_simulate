@@ -39,6 +39,7 @@ dependencies:
   json_annotation: ^4.4.0
   flutter_tts: ^3.3.3
   http: ^0.13.3
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
