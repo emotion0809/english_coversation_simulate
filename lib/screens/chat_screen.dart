@@ -4,9 +4,6 @@ import '../models/message_model.dart';
 import '../models/user_model.dart';
 
 class ChatScreen extends StatefulWidget {
-  final User user;
-
-  ChatScreen({required this.user});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -111,7 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: Text(
-          widget.user.name,
+          'widget.user.name',
           style: TextStyle(
             fontSize: 28.0,
             fontWeight: FontWeight.bold,
