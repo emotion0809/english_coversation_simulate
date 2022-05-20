@@ -15,8 +15,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
-    for(int i = 0;i < 10;i++){
-      //取得授權
+    //取得授權
+    for (int i = 0; i < 10; i++) {
       Future<Auth> _auth = API_Manager().getAuth(Situations[i].port);
       _auth.then((value) {
         Situations[i].auth = value.accessToken;
@@ -61,13 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       BorderRadius.all(Radius.circular(20))),
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ChatScreen(satitle: Situations[index*2].name,port: Situations[index*2].port,index: index*2),
-                                      maintainState: false));
+                              connectSituation(index * 2);
                             },
-                            child: AutoSizeText(Situations[index*2].name,style: TextStyle(fontSize: 30)),
+                            child: AutoSizeText(Situations[index * 2].name,
+                                style: TextStyle(fontSize: 30)),
                           ),
                         ),
                       ),
@@ -88,13 +85,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       BorderRadius.all(Radius.circular(20))),
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ChatScreen(satitle: Situations[index*2+1].name,port: Situations[index*2+1].port,index: index*2+1),
-                                      maintainState: false));
+                              connectSituation(index * 2 + 1);
                             },
-                            child: AutoSizeText(Situations[index*2+1].name,style: TextStyle(fontSize: 30),),
+                            child: AutoSizeText(
+                              Situations[index * 2 + 1].name,
+                              style: TextStyle(fontSize: 30),
+                            ),
                           ),
                         ),
                       ),
@@ -105,5 +101,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ));
             }));
+  }
+
+  connectSituation(int index) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ChatScreen(
+                  index: index,
+                ),
+            maintainState: false));
   }
 }

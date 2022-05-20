@@ -6,11 +6,9 @@ import '../models/auth_manager.dart';
 import '../models/reply_manager.dart';
 
 class API_Manager {
-  static String access_token = "";
-  static List<String> bot_reply = ["","","","",""];
+  static List<String> bot_reply = ["", "", "", "", ""];
 
   Future<Auth> getAuth(String port) async {
-
     final response = await http.post(
       Uri.parse('http://192.168.1.1:$port/api/auth'),
       body: '{"username": "me", "password": "PASSWORD"}',
@@ -24,18 +22,19 @@ class API_Manager {
     }
   }
 
-  static Future<Reply> reply(String port, String conversationID, String chat) async {
+  static Future<Reply> reply(
+      String port, String conversationID, String auth, String chat) async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.1:$port/api/conversations/$conversationID/messages/'),
+      Uri.parse(
+          'http://192.168.1.1:$port/api/conversations/$conversationID/messages/'),
       headers: {
         'Content-Type': 'application/json',
-        HttpHeaders.authorizationHeader: 'Bearer $access_token',
+        HttpHeaders.authorizationHeader: 'Bearer $auth',
       },
       body: '{"message":"$chat"}',
     );
 
     if (response.statusCode == 200) {
-
       List result = jsonDecode(response.body);
 
       for (int i = 0; i < result.length; i++) {
@@ -43,6 +42,7 @@ class API_Manager {
             result[i].toString().substring(39, result[i].toString().length - 1);
       }
     }
-    return Reply.fromJson(json.decode('{"recipient_id": "{conversationID}","text": "Hey! How are you?"}'));
+    return Reply.fromJson(json.decode(
+        '{"recipient_id": "{conversationID}","text": "Hey! How are you?"}'));
   }
 }

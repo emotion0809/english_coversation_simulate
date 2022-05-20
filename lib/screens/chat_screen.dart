@@ -1,4 +1,3 @@
-
 import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:avatar_glow/avatar_glow.dart';
@@ -9,15 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-
 import '../models/api_route_model.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String satitle;
-  final String port;
   final int index;
 
-  ChatScreen({required this.satitle, required this.port,required this.index});
+  ChatScreen({required this.index});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -45,7 +41,6 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     initSpeechState();
-    API_Manager.access_token = Situations[widget.index].auth;
     //取得CoversationID
     now = DateTime.now();
     coversationID = DateFormat('yyyyMMddHHmmssSSS').format(now);
@@ -237,7 +232,7 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xff8d028d),
         title: Text(
-          widget.satitle,
+          Situations[widget.index].name,
           style: TextStyle(
             fontSize: 28.0,
             fontWeight: FontWeight.bold,
@@ -300,7 +295,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   connectAPI(String input) async {
-    await API_Manager.reply(widget.port, coversationID, input);
+    await API_Manager.reply(Situations[widget.index].port, coversationID, Situations[widget.index].auth, input);
     now = DateTime.now();
     formattedDate = DateFormat('h:mm a').format(now);
     if (API_Manager.bot_reply != ["", "", "", "", ""]) {
