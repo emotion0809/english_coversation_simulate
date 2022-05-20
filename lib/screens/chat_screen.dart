@@ -37,6 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final SpeechToText speech = SpeechToText();
   final FlutterTts flutterTts = FlutterTts();
   String _text = '請按下按鈕後說點英文吧';
+  bool startAnime = false;
 
   void initState() {
     super.initState();
@@ -76,6 +77,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void stopListening() {
+    startAnime = false;
+    setState(() {});
     speech.stop();
     _text = '已取消說話';
     setState(() {
@@ -93,6 +96,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void startListening() {
+    startAnime = true;
+    setState(() {});
     _text = '正在聆聽......';
     speech.listen(
         onResult: (val) => setState(() async {
@@ -128,15 +133,19 @@ class _ChatScreenState extends State<ChatScreen> {
       padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
       width: MediaQuery.of(context).size.width * 0.75,
       decoration: BoxDecoration(
-        color: isUser ? Colors.blueGrey : Color(0xFFFF8040),
+        color: isUser ? Color(0xFFA6A6D2) : Color(0xFFFFAD86),
         borderRadius: isUser
             ? BorderRadius.only(
                 topLeft: Radius.circular(15.0),
                 bottomLeft: Radius.circular(15.0),
+                topRight: Radius.circular(15.0),
+                bottomRight: Radius.circular(15.0),
               )
             : BorderRadius.only(
                 topRight: Radius.circular(15.0),
                 bottomRight: Radius.circular(15.0),
+                topLeft: Radius.circular(15.0),
+                bottomLeft: Radius.circular(15.0),
               ),
       ),
       child: Column(
@@ -145,7 +154,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Text(
             message.time,
             style: TextStyle(
-              color: Colors.blueGrey,
+              color: const Color(0xFF484891),
               fontSize: 16.0,
               fontWeight: FontWeight.w600,
             ),
@@ -174,51 +183,57 @@ class _ChatScreenState extends State<ChatScreen> {
 
   _buildMessageComposer() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 0.0),
       height: 180.0,
       color: Colors.white,
       child: Container(
-        color: Color(0xFFE0E0E0),
         child: Column(
           children: [
             Divider(
-              thickness: 2,
-              color: Color(0xFF9D9D9D),
+              thickness: 1,
+              color: Color(0xff5E005E),
             ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {},
-                    child: AutoSizeText(
-                      outText,
-                      style: TextStyle(color: Colors.black),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      child: AutoSizeText(
+                        outText,
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  iconSize: 25.0,
-                  color: const Color(0xff8d028d),
-                  onPressed: () {
-                    sendMessage();
-                  },
-                ),
-              ],
+                  IconButton(
+                    icon: Icon(Icons.send),
+                    iconSize: 25.0,
+                    color: const Color(0xff8d028d),
+                    onPressed: () {
+                      sendMessage();
+                    },
+                  ),
+                ],
+              ),
             ),
             AvatarGlow(
                 glowColor: Colors.red,
+                animate: startAnime,
                 child: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.red,
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: Icon(Icons.mic, color: Colors.white),
-                      iconSize: 30,
-                      onPressed: !_hasSpeech || speech.isListening
-                          ? stopListening
-                          : startListening,
-                    )),
+                  radius: 30,
+                  backgroundColor: Colors.red,
+                  child: CircleAvatar(
+                      radius: 27,
+                      backgroundColor: Colors.white,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Icon(Icons.mic, color: Colors.red),
+                        iconSize: 30,
+                        onPressed: !_hasSpeech || speech.isListening
+                            ? stopListening
+                            : startListening,
+                      )),
+                ),
                 endRadius: 60)
           ],
         ),
@@ -254,6 +269,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             Expanded(
               child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                 ),
@@ -295,7 +311,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   connectAPI(String input) async {
-    await API_Manager.reply(Situations[widget.index].port, coversationID, Situations[widget.index].auth, input);
+    await API_Manager.reply(Situations[widget.index].port, coversationID,
+        Situations[widget.index].auth, input);
     now = DateTime.now();
     formattedDate = DateFormat('h:mm a').format(now);
     if (API_Manager.bot_reply != ["", "", "", "", ""]) {
