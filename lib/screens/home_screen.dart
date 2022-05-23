@@ -45,14 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     children: [
                       Padding(padding: EdgeInsets.all(10)),
-                      Expanded(
-                        child: _situationButton(index*2)
-                      ),
+                      Expanded(child: _situationButton(index * 2)),
                       Padding(padding: EdgeInsets.all(10)),
-                      Expanded(
-                        child: _situationButton(index*2+1)
-                      ),
-
+                      Expanded(child: _situationButton(index * 2 + 1)),
                     ],
                   ),
                   Padding(padding: EdgeInsets.all(10)),
@@ -62,8 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _situationButton(int index) {
-    return
-    Container(
+    return Container(
         height: 160,
         child: InkWell(
           onTap: () {
@@ -94,13 +88,25 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 10,
               alignment: Alignment.bottomRight,
               padding: EdgeInsets.fromLTRB(0, 0, 5, 5),
-              child: AutoSizeText(
-                Situations[index].name,
-                style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
+              child: Stack(children: [
+                AutoSizeText(
+                  Situations[index].name,
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 6
+                        ..color = Colors.black),
+                ),
+                AutoSizeText(
+                  Situations[index].name,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold),
+                ),
+              ]),
             ),
           ),
         ));
