@@ -135,18 +135,8 @@ class _ChatScreenState extends State<ChatScreen> {
       decoration: BoxDecoration(
         color: isUser ? Color(0xFFA6A6D2) : Color(0xFFFFAD86),
         borderRadius: isUser
-            ? BorderRadius.only(
-                topLeft: Radius.circular(15.0),
-                bottomLeft: Radius.circular(15.0),
-                topRight: Radius.circular(15.0),
-                bottomRight: Radius.circular(15.0),
-              )
-            : BorderRadius.only(
-                topRight: Radius.circular(15.0),
-                bottomRight: Radius.circular(15.0),
-                topLeft: Radius.circular(15.0),
-                bottomLeft: Radius.circular(15.0),
-              ),
+            ? BorderRadius.all(Radius.circular(15))
+            : BorderRadius.all(Radius.circular(20))
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

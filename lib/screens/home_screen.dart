@@ -46,61 +46,64 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Padding(padding: EdgeInsets.all(10)),
                       Expanded(
-                        child: Container(
-                          height: 150,
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(
-                                  color: Color(0xff5E005E), width: 5),
-                              primary: Colors.white,
-                              backgroundColor: const Color(0xff8d028d),
-                              shadowColor: Colors.black,
-                              elevation: 20,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                            ),
-                            onPressed: () {
-                              connectSituation(index * 2);
-                            },
-                            child: AutoSizeText(Situations[index * 2].name,
-                                style: TextStyle(fontSize: 30)),
-                          ),
-                        ),
+                        child: _situationButton(index*2)
                       ),
                       Padding(padding: EdgeInsets.all(10)),
                       Expanded(
-                        child: Container(
-                          height: 150,
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(
-                                  color: Color(0xff5E005E), width: 5),
-                              primary: Colors.white,
-                              backgroundColor: const Color(0xff8d028d),
-                              shadowColor: Colors.black,
-                              elevation: 20,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                            ),
-                            onPressed: () {
-                              connectSituation(index * 2 + 1);
-                            },
-                            child: AutoSizeText(
-                              Situations[index * 2 + 1].name,
-                              style: TextStyle(fontSize: 30),
-                            ),
-                          ),
-                        ),
+                        child: _situationButton(index*2+1)
                       ),
-                      Padding(padding: EdgeInsets.all(10)),
+
                     ],
                   ),
                   Padding(padding: EdgeInsets.all(10)),
                 ],
               ));
             }));
+  }
+
+  _situationButton(int index) {
+    return
+    Container(
+        height: 160,
+        child: InkWell(
+          onTap: () {
+            connectSituation(index);
+          }, // Handle your callback.
+          splashColor: Colors.brown.withOpacity(0.5),
+          child: Ink(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(Situations[index].imageUrl),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              border: Border.all(
+                color: Color(0xff5E005E),
+                width: 5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xff9D9D9D),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Container(
+              height: 10,
+              alignment: Alignment.bottomRight,
+              padding: EdgeInsets.fromLTRB(0, 0, 5, 5),
+              child: AutoSizeText(
+                Situations[index].name,
+                style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ));
   }
 
   connectSituation(int index) {
