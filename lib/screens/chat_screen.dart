@@ -256,7 +256,7 @@ class _ChatScreenState extends State<ChatScreen> {
         shrinkWrap: true,
         itemCount: situationHintList[ Situations[widget.index].id].length,
         itemBuilder: (BuildContext context, int index) {
-          if(response.contains(situationHintList[Situations[widget.index].id][index].rasaMessage)){
+          if(response.contains(situationHintList[Situations[widget.index].id][index].rasaMessage) || response.contains(situationHintList[Situations[widget.index].id][index].rasaMessage2) || response.contains(situationHintList[Situations[widget.index].id][index].rasaMessage3)){
             return Row(
               children: [
                 Column(children: [
