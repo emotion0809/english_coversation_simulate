@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:english_coversation_simulate_re/models/hint_model.dart';
 import 'package:english_coversation_simulate_re/models/message_model.dart';
 import 'package:english_coversation_simulate_re/services/api_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,6 +26,7 @@ class _ChatScreenState extends State<ChatScreen> {
   String coversationID = "";
   String outText = '';
   String formattedDate = "";
+  String response = "";
 
   //文字轉語音和語音轉文字
   bool useDirectChat = false;
@@ -133,11 +135,8 @@ class _ChatScreenState extends State<ChatScreen> {
       padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
       width: MediaQuery.of(context).size.width * 0.75,
       decoration: BoxDecoration(
-        color: isUser ? Color(0xFFA6A6D2) : Color(0xFFFFAD86),
-        borderRadius: isUser
-            ? BorderRadius.all(Radius.circular(15))
-            : BorderRadius.all(Radius.circular(20))
-      ),
+          color: isUser ? Color(0xFFA6A6D2) : Color(0xFFFFAD86),
+          borderRadius: BorderRadius.all(Radius.circular(15))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -231,6 +230,85 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  Future<void> _hintDialog(BuildContext context) {
+    return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              '提示',
+              style: TextStyle(
+                color: const Color(0xff8d028d),
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            content: setupHintDialog(),
+          );
+        });
+  }
+
+  setupHintDialog() {
+    return Container(
+      height: 300.0, // Change as per your requirement
+      width: 300.0,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: situationHintList[ Situations[widget.index].id].length,
+        itemBuilder: (BuildContext context, int index) {
+          if(response.contains(situationHintList[Situations[widget.index].id][index].rasaMessage)){
+            return Row(
+              children: [
+                Column(children: [
+                  Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                  Container(
+                    width: 230,
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Color(0xFFA6A6D2)),
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AutoSizeText(
+                          situationHintList[Situations[widget.index].id][index].chinseHint,
+                          style: TextStyle(
+                            color: const Color(0xFF484891),
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        AutoSizeText(
+                          situationHintList[Situations[widget.index].id][index].englishHint,
+                          style: TextStyle(
+                            color: const Color(0xFF484891),
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ]),
+                IconButton(
+                  icon: Icon(Icons.volume_up),
+                  iconSize: 20.0,
+                  color: const Color(0xff8d028d),
+                  onPressed: () async {
+                    await flutterTts.speak(situationHintList[Situations[widget.index].id][index].englishHint);
+                  },
+                )
+              ],
+            );
+          }
+          return Container();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -249,7 +327,9 @@ class _ChatScreenState extends State<ChatScreen> {
             icon: Icon(Icons.lightbulb_outline),
             iconSize: 30.0,
             color: Colors.white,
-            onPressed: () {},
+            onPressed: () {
+              _hintDialog(context);
+            },
           ),
         ],
       ),
@@ -322,6 +402,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 time: formattedDate,
                 text: API_Manager.bot_reply[i],
                 isUser: false));
+            response = API_Manager.bot_reply[i];
             await flutterTts.speak(API_Manager.bot_reply[i]);
           }
           API_Manager.bot_reply[i] = "";

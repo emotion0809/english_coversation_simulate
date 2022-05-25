@@ -48,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(child: _situationButton(index * 2)),
                       Padding(padding: EdgeInsets.all(10)),
                       Expanded(child: _situationButton(index * 2 + 1)),
+                      Padding(padding: EdgeInsets.all(10)),
                     ],
                   ),
                   Padding(padding: EdgeInsets.all(10)),
@@ -58,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _situationButton(int index) {
     return Container(
-        height: 160,
+        height: 150,
         child: InkWell(
           onTap: () {
             connectSituation(index);
