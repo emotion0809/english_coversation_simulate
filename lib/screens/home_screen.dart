@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     //取得授權
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < Situations.length; i++) {
       Future<Auth> _auth = API_Manager().getAuth(Situations[i].port);
       _auth.then((value) {
         Situations[i].auth = value.accessToken;
@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   maxLines: 1,
                 ))),
         body: ListView.builder(
-            itemCount: 5,
+            itemCount: Situations.length~/2 +1,
             itemBuilder: (BuildContext context, int index) {
               return (Column(
                 children: [
@@ -58,59 +58,63 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _situationButton(int index) {
-    return Container(
-        height: 150,
-        child: InkWell(
-          onTap: () {
-            connectSituation(index);
-          }, // Handle your callback.
-          splashColor: Colors.brown.withOpacity(0.5),
-          child: Ink(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(Situations[index].imageUrl),
-                fit: BoxFit.cover,
+    try {
+      return Container(
+          height: 150,
+          child: InkWell(
+            onTap: () {
+              connectSituation(index);
+            }, // Handle your callback.
+            splashColor: Colors.brown.withOpacity(0.5),
+            child: Ink(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(Situations[index].imageUrl),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                border: Border.all(
+                  color: Color(0xff5E005E),
+                  width: 5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xff9D9D9D),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
               ),
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              border: Border.all(
-                color: Color(0xff5E005E),
-                width: 5,
+              child: Container(
+                height: 10,
+                alignment: Alignment.bottomRight,
+                padding: EdgeInsets.fromLTRB(0, 0, 5, 5),
+                child: Stack(children: [
+                  AutoSizeText(
+                    Situations[index].name,
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        foreground: Paint()
+                          ..style = PaintingStyle.stroke
+                          ..strokeWidth = 6
+                          ..color = Colors.black),
+                  ),
+                  AutoSizeText(
+                    Situations[index].name,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ]),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0xff9D9D9D),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
             ),
-            child: Container(
-              height: 10,
-              alignment: Alignment.bottomRight,
-              padding: EdgeInsets.fromLTRB(0, 0, 5, 5),
-              child: Stack(children: [
-                AutoSizeText(
-                  Situations[index].name,
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      foreground: Paint()
-                        ..style = PaintingStyle.stroke
-                        ..strokeWidth = 6
-                        ..color = Colors.black),
-                ),
-                AutoSizeText(
-                  Situations[index].name,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
-              ]),
-            ),
-          ),
-        ));
+          ));
+    }catch(error){
+      return Container();
+    }
   }
 
   connectSituation(int index) {

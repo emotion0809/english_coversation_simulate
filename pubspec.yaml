@@ -77,6 +77,7 @@ flutter:
     - assets/images/making_a_reservation.jpg
     - assets/images/making_negative_comment_on_food.jpg
     - assets/images/making_postive_comment_on_food.jpg
+    - assets/images/recipe.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

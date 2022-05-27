@@ -54,10 +54,21 @@ List<Situation> Situations = [
       id: 8,
       name: '給好評',
       port: '5025',
-      imageUrl: 'assets/images/making_negative_comment_on_food.jpg'),
+      imageUrl: 'assets/images/making_postive_comment_on_food.jpg'),
   Situation(
       id: 9,
       name: '給負評',
       port: '5028',
-      imageUrl: 'assets/images/making_postive_comment_on_food.jpg'),
+      imageUrl: 'assets/images/making_negative_comment_on_food.jpg'),
+  Situation(
+      id: 10,
+      name: '速食點餐',
+      port: '5031',
+      imageUrl: 'assets/images/fastfood.jpg'),
+  Situation(
+      id: 11,
+      name: '食譜查詢',
+      port: '5034',
+      imageUrl: 'assets/images/recipe.jpg'),
+
 ];
