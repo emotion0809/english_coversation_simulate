@@ -66,7 +66,7 @@ List<Hint> choose_a_good_reastaurant = [
       rasaMessage3: "Would that be a good choice for your birthday dinner then?",
       chinseHint: "這是很好的選擇,我們現在就打電話預約",
       englishHint:
-      "I think that that would be a really good choice! Let's call and make a reservation."),
+      "I think that would be a really good choice! Let's call and make a reservation."),
   ];
 
 List<Hint> making_a_reservation = [
