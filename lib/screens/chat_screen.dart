@@ -301,7 +301,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   connectAPI(String input) async {
-    var response = await API_Manager.reply(widget.port, coversationID, input);
+    var response = await API_Manager.reply(widget.port, input);
     String response_string = jsonDecode(response);
     now = DateTime.now();
     formattedDate = DateFormat('h:mm a').format(now);
