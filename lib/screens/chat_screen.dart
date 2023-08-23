@@ -1,4 +1,5 @@
 
+import 'dart:convert';
 import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:avatar_glow/avatar_glow.dart';
@@ -193,12 +194,10 @@ class _ChatScreenState extends State<ChatScreen> {
             Row(
               children: <Widget>[
                 Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {},
-                    child: AutoSizeText(
-                      outText,
-                      style: TextStyle(color: Colors.black),
-                    ),
+                  child: TextField(
+                   onSubmitted: (text){
+                     outText = text;
+                   },
                   ),
                 ),
                 IconButton(
@@ -211,20 +210,22 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ],
             ),
-            AvatarGlow(
-                glowColor: Colors.red,
-                child: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.red,
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: Icon(Icons.mic, color: Colors.white),
-                      iconSize: 30,
-                      onPressed: !_hasSpeech || speech.isListening
-                          ? stopListening
-                          : startListening,
-                    )),
-                endRadius: 60)
+            Expanded(
+              child: AvatarGlow(
+                  glowColor: Colors.red,
+                  child: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.red,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Icon(Icons.mic, color: Colors.white),
+                        iconSize: 30,
+                        onPressed: !_hasSpeech || speech.isListening
+                            ? stopListening
+                            : startListening,
+                      )),
+                  endRadius: 60),
+            )
           ],
         ),
       ),
@@ -300,12 +301,20 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   connectAPI(String input) async {
-    await API_Manager.reply(widget.port, coversationID, input);
+    var response = await API_Manager.reply(widget.port, coversationID, input);
+    String response_string = jsonDecode(response);
     now = DateTime.now();
     formattedDate = DateFormat('h:mm a').format(now);
-    if (API_Manager.bot_reply != ["", "", "", "", ""]) {
-      for (var i = 0; i < API_Manager.bot_reply.length; i++) {
-        if (API_Manager.bot_reply[i] != "") {
+
+    messages.add(Message(
+      time: formattedDate,
+      text: response_string,
+      isUser: false,
+    ));
+
+    /*if (response_string != ["", "", "", "", ""]) {
+      for (var i = 0; i < response_string.length; i++) {
+        if (response_string[i] != "") {
           if (API_Manager.bot_reply[i].startsWith(":")) {
             API_Manager.bot_reply[i] = API_Manager.bot_reply[i].substring(2);
             messages.add(Message(
@@ -325,7 +334,7 @@ class _ChatScreenState extends State<ChatScreen> {
           API_Manager.bot_reply[i] = "";
         }
       }
-    }
+    }*/
     setState(() {});
   }
 }

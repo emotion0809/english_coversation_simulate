@@ -12,7 +12,7 @@ class API_Manager {
   Future<Auth> getAuth(String port) async {
 
     final response = await http.post(
-      Uri.parse('http://192.168.1.1:$port/api/auth'),
+      Uri.parse('http://127.0.0.1:$port/api/auth'),
       body: '{"username": "me", "password": "PASSWORD"}',
     );
 
@@ -24,25 +24,18 @@ class API_Manager {
     }
   }
 
-  static Future<Reply> reply(String port, String conversationID, String chat) async {
+  static Future<String> reply(String port, String conversationID, String chat) async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.1:$port/api/conversations/$conversationID/messages/'),
-      headers: {
+      Uri.parse('http://127.0.0.1:$port/webhooks/rest/webhook'),
+      /*headers: {
         'Content-Type': 'application/json',
-        HttpHeaders.authorizationHeader: 'Bearer $access_token',
-      },
-      body: '{"message":"$chat"}',
+        //HttpHeaders.authorizationHeader: 'Bearer $access_token',
+      },*/
+      body: {'message' : chat},
     );
 
-    if (response.statusCode == 200) {
+    print(response.body.toString());
 
-      List result = jsonDecode(response.body);
-
-      for (int i = 0; i < result.length; i++) {
-        bot_reply[i] =
-            result[i].toString().substring(39, result[i].toString().length - 1);
-      }
-    }
-    return Reply.fromJson(json.decode('{"recipient_id": "{conversationID}","text": "Hey! How are you?"}'));
+    return response.body.toString();
   }
 }

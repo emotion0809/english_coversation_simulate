@@ -15,13 +15,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
-    for(int i = 0;i < 10;i++){
-      //取得授權
-      Future<Auth> _auth = API_Manager().getAuth(Situations[i].port);
-      _auth.then((value) {
-        Situations[i].auth = value.accessToken;
-      });
-    }
   }
 
   @override
@@ -48,7 +41,34 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: Container(
                           height: 150,
-                          child: OutlinedButton(
+                          child: Ink(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color(0xFF8d028d), Color(0xFFc681c6)],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            child: OutlinedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatScreen(
+                                            satitle: Situations[index * 2].name,
+                                            port: Situations[index * 2].port,
+                                            index: index * 2),
+                                        maintainState: false));
+                              },
+                              child: AutoSizeText(Situations[index * 2].name,
+                                  style: TextStyle(
+                                      fontSize: 30, color: Colors.white)),
+                            ),
+                          ),
+                          /*child: OutlinedButton(
+
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(
                                   color: Color(0xff5E005E), width: 5),
@@ -68,14 +88,42 @@ class _HomeScreenState extends State<HomeScreen> {
                                       maintainState: false));
                             },
                             child: AutoSizeText(Situations[index*2].name,style: TextStyle(fontSize: 30)),
-                          ),
+                          ),*/
                         ),
                       ),
                       Padding(padding: EdgeInsets.all(10)),
                       Expanded(
                         child: Container(
                           height: 150,
-                          child: OutlinedButton(
+                          child: Ink(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color(0xFF8d028d), Color(0xFFc681c6)],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            child: OutlinedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatScreen(
+                                            satitle:
+                                                Situations[index * 2 + 1].name,
+                                            port:
+                                                Situations[index * 2 + 1].port,
+                                            index: index * 2 + 1),
+                                        maintainState: false));
+                              },
+                              child: AutoSizeText(Situations[index * 2 + 1].name,
+                                  style: TextStyle(
+                                      fontSize: 30, color: Colors.white)),
+                            ),
+                          ),
+                          /*child: OutlinedButton(
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(
                                   color: Color(0xff5E005E), width: 5),
@@ -91,11 +139,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ChatScreen(satitle: Situations[index*2+1].name,port: Situations[index*2+1].port,index: index*2+1),
+                                      builder: (context) => ChatScreen(
+                                          satitle:
+                                              Situations[index * 2 + 1].name,
+                                          port: Situations[index * 2 + 1].port,
+                                          index: index * 2 + 1),
                                       maintainState: false));
                             },
-                            child: AutoSizeText(Situations[index*2+1].name,style: TextStyle(fontSize: 30),),
-                          ),
+                            child: AutoSizeText(
+                              Situations[index * 2 + 1].name,
+                              style: TextStyle(fontSize: 30),
+                            ),
+                          ),*/
                         ),
                       ),
                       Padding(padding: EdgeInsets.all(10)),
